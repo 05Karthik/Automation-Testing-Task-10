@@ -1,0 +1,93 @@
+Q-1.
+
+import java.io.File;
+import java.io.IOException;
+import java.time.Duration;
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.By;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import io.github.bonigarcia.wdm.WebDriverManager;
+
+public class Synchronisescript {
+
+	public static void main(String[] args) throws IOException, InterruptedException {
+		// To Initialize the browser
+		WebDriverManager.chromedriver().setup();
+		WebDriver driver=new ChromeDriver();
+		// Navigate to Web page	
+		driver.navigate().to("https://phptravels.com/demo/");
+		// To maximize and delete cookies
+		driver.manage().window().maximize();
+		driver.manage().deleteAllCookies();
+		// To fill the form details
+		WebElement FirstNameField = driver.findElement(By.xpath("//input[@name='first_name']"));
+		FirstNameField.sendKeys("php");
+		
+		WebElement LastnameField = driver.findElement(By.xpath("//input[@name='last_name']"));
+		LastnameField.sendKeys("travel");
+		
+		WebElement BusinessNameField = driver.findElement(By.xpath("//input[@name='business_name']"));
+		BusinessNameField.sendKeys("Company");
+		
+		WebElement EmailField = driver.findElement(By.xpath("(//input[@name='email'])[1]"));
+		EmailField.sendKeys("php@email.com");
+		
+	//Logic of Verification	
+		WebElement no1 = driver.findElement(By.xpath("//span[@id='numb1']"));
+		String num1=no1.getText();
+		WebElement no2 = driver.findElement(By.xpath("//span[@id='numb2']"));
+		String num2=no2.getText();
+		int a=Integer.parseInt(num1);
+		int b=Integer.parseInt(num2);
+		int sum=a+b;
+		String result= Integer.toString(sum);
+		// To click submit button using webdriverwait	
+		WebElement Result=driver.findElement(By.xpath("//input[@id='number']"));
+		Result.sendKeys(result);
+		WebElement Submitbtn=driver.findElement(By.xpath("//button[@id='demo']"));
+		WebDriverWait wait=new WebDriverWait(driver, Duration.ofSeconds(60));
+	    wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@id='demo']")));
+		Submitbtn.click();
+		
+		//To verify form is submitted
+		String Title=driver.getTitle();
+		System.out.println("Title is: "+Title);
+		String actualtitle="Book Your Free Demo Now - Phptravels";
+		if(actualtitle.equals(Title)) {
+			System.out.println("Form is Submitted");
+		}else {
+			System.out.println("Form is Not Submitted");
+		}
+		
+        //To Taking a screenshot
+        TakesScreenshot screenshot =(TakesScreenshot)driver;
+        File file = screenshot.getScreenshotAs(OutputType.FILE);
+        File F1=new File("C:\\Users\\karth\\eclipse-workspace\\Selenium Task\\home.png");
+        FileUtils.copyFile(file,F1);
+  		System.out.println("Screnshot is Taken Successfully");
+		//To Close the Browser		
+		driver.close();
+		
+	
+		
+
+		
+		
+
+	}
+
+}
+
+
+Output = 
+
+Title is: Book Your Free Demo Now - Phptravels
+Form is Submitted
+Screnshot is Taken Successfully
